@@ -3,17 +3,21 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
-  },
-  {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'projekti',
     pathMatch: 'full'
   },
   {
-    path: 'login',
-    loadChildren: () => import('./auth/log-in/log-in.module').then( m => m.LogInPageModule)
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then( m => m.AuthPageModule)
+  },
+  {
+    path: 'projekti',
+    loadChildren: () => import('./projekti/projekti.module').then( m => m.ProjektiPageModule)
+  },
+  {
+    path: 'prijave',
+    loadChildren: () => import('./prijave/prijave.module').then( m => m.PrijavePageModule)
   },
 ];
 
