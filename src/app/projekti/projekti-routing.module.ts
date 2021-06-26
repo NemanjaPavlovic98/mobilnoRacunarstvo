@@ -37,7 +37,7 @@ const routes: Routes = [
             loadChildren: () => import('./izlistani/izmeni-projekat/izmeni-projekat.module').then(m => m.IzmeniProjekatPageModule)
           },
           {
-            path: ':placeId',
+            path: ':projekatId',
             loadChildren: () => import('./izlistani/prijave/prijave.module').then(m => m.PrijavePageModule)
           }
         ]

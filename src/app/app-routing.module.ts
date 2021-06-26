@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -8,16 +9,18 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then( m => m.AuthPageModule)
-  },
-  {
     path: 'projekti',
-    loadChildren: () => import('./projekti/projekti.module').then( m => m.ProjektiPageModule)
+    loadChildren: () => import('./projekti/projekti.module').then( m => m.ProjektiPageModule),
+    canLoad: [AuthGuard]
   },
   {
     path: 'prijave',
-    loadChildren: () => import('./prijave/prijave.module').then( m => m.PrijavePageModule)
+    loadChildren: () => import('./prijave/prijave.module').then( m => m.PrijavePageModule),
+    canLoad: [AuthGuard]
+  },
+  {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then( m => m.AuthPageModule)
   },
 ];
 

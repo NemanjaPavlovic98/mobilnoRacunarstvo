@@ -2,24 +2,33 @@
   <!-- menu -->
   <ion-menu side="start" contentId="main">
     <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title>Start Menu</ion-title>
+      <ion-toolbar>
+        <ion-title>
+          FONIS projekti
+        </ion-title>
       </ion-toolbar>
     </ion-header>
+
     <ion-content>
-      <ion-list lines="none">
-        <ion-menu-toogle>
-          <ion-item>
-            <ion-icon name="document-text" slot="start"></ion-icon>
-            <ion-label>My profile</ion-label>
+      <ion-list>
+        <ion-menu-toggle>
+          <ion-item lines="none" routerLink="/projekti/tabs/istaknuto">
+            <ion-icon name="book" slot="start"></ion-icon>
+            <ion-label>Pronadji projekte</ion-label>
           </ion-item>
-        </ion-menu-toogle>
-        <ion-menu-toogle>
-          <ion-item>
-            <ion-icon name="log-out" slot="start"></ion-icon>
-            <ion-label>Log out</ion-label>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item lines="none" routerLink="/prijave">
+            <ion-icon name="checkbox-outline" slot="start"></ion-icon>
+            <ion-label>Moji projekti</ion-label>
           </ion-item>
-        </ion-menu-toogle>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item lines="none" (click)="onLogout()" button>
+            <ion-icon name="exit" slot="start"></ion-icon>
+            <ion-label>Logout</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
       </ion-list>
     </ion-content>
   </ion-menu>

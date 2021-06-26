@@ -1,9 +1,16 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>prijave</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/projekti/tabs/izlistani"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Prijave za {{projekat.naziv}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <ion-button
+    margin
+    color="primary"
+    [routerLink]="['/', 'projekti', 'tabs', 'izlistani', 'izmeni', projekat.id]"
+    >Edit</ion-button>
 </ion-content>
