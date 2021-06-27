@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ActionSheetController, ModalController, NavController } from '@ionic/angular';
+import { ActionSheetController, LoadingController, ModalController, NavController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { PrijavaComponent } from 'src/app/prijave/prijava/prijava.component';
+import { PrijaveService } from 'src/app/prijave/prijave.service';
 import { Projekat } from '../../projekti.model';
 import { ProjektiService } from '../../projekti.service';
 
@@ -10,14 +12,17 @@ import { ProjektiService } from '../../projekti.service';
   templateUrl: './detalji-projekta.page.html',
   styleUrls: ['./detalji-projekta.page.scss'],
 })
-export class DetaljiProjektaPage implements OnInit {
+export class DetaljiProjektaPage implements OnInit, OnDestroy {
+  private subskr: Subscription;
   projekat: Projekat;
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private projektiServis: ProjektiService,
     private modalController: ModalController,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private prijaveService: PrijaveService,
+    private loader: LoadingController
   ) { }
 
   ngOnInit() {
@@ -26,10 +31,15 @@ export class DetaljiProjektaPage implements OnInit {
         this.navCtrl.navigateBack('/projekti/tabs/istaknuto');
         return;
       }
-      this.projekat = this.projektiServis.getProjekat(paramMap.get('projekatId'));
+      this.subskr = this.projektiServis.getProjekat(paramMap.get('projekatId')).subscribe(projekat => {
+        this.projekat = projekat;
+      });
     });
   }
-
+  ngOnDestroy(): void {
+    if(this.subskr)
+      this.subskr.unsubscribe();
+  }
   prijaviSe() {
     this.actionSheetCtrl
     .create({
@@ -69,9 +79,22 @@ export class DetaljiProjektaPage implements OnInit {
         return modalEl.onDidDismiss();
       }
     ).then( resData => {
-      console.log(resData.data, resData.role);
       if(resData.role === 'potvrdi'){
-        console.log('uspeh!');
+        this.loader.create({message:  "Saceckaj..."}).then(loadingEl => {
+          loadingEl.present();
+          const data = resData.data.prijava;
+          this.prijaveService.prijaviSe(
+            this.projekat.id,
+            this.projekat.naziv,
+            this.projekat.imgUrl,
+            data.ime,
+            data.prezime,
+            data.tim,
+            data.poruka
+          ).subscribe(() => {
+             loadingEl.dismiss();
+          });
+        });
       }
     });
 

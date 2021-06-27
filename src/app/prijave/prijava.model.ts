@@ -4,6 +4,10 @@ export class Prijava {
         public projekatId: string,
         public userId: string,
         public nazivProjekta: string,
-        public brojPrijava: number
+        public imgProjekta: string,
+        public ime: string,
+        public prezime: string,
+        public tim: string,
+        public poruka: string
     ) { }
 }

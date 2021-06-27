@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonItemSliding } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Projekat } from '../projekti.model';
 import { ProjektiService } from '../projekti.service';
 
@@ -9,13 +10,21 @@ import { ProjektiService } from '../projekti.service';
   templateUrl: './izlistani.page.html',
   styleUrls: ['./izlistani.page.scss'],
 })
-export class IzlistaniPage implements OnInit {
+export class IzlistaniPage implements OnInit, OnDestroy {
   izlistaniProjekti: Projekat[];
+  private subskr: Subscription;
   
   constructor(private projektiServise: ProjektiService, private router:Router) { }
 
+  ngOnDestroy(): void {
+    if(this.subskr)
+      this.subskr.unsubscribe();
+  }
+
   ngOnInit() {
-    this.izlistaniProjekti = this.projektiServise.projekti;
+    this.subskr = this.projektiServise.projekti.subscribe(projekti =>  {
+      this.izlistaniProjekti  = projekti;
+    }) 
   }
   onEdit(id: string, sliderItem: IonItemSliding){
     sliderItem.close();

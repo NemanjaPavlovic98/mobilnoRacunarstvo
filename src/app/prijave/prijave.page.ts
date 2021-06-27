@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IonItemSliding } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { Prijava } from './prijava.model';
 import { PrijaveService } from './prijave.service';
 
@@ -8,16 +9,23 @@ import { PrijaveService } from './prijave.service';
   templateUrl: './prijave.page.html',
   styleUrls: ['./prijave.page.scss'],
 })
-export class PrijavePage implements OnInit {
+export class PrijavePage implements OnInit, OnDestroy {
   ucitanePrijave: Prijava[];
-
+  private bookingSub: Subscription;
+  
   constructor(private prijaveService: PrijaveService) { }
-
-  ngOnInit() {
-    this.ucitanePrijave = this.prijaveService.prijave;
+  ngOnDestroy(): void {
+    this.bookingSub.unsubscribe();
   }
 
-  onCancelBooking(projekatId: string, slidingEl: IonItemSliding) {
+  ngOnInit() {
+    this.bookingSub = this.prijaveService.prijave.subscribe(prijava => {
+      this.ucitanePrijave = prijava;
+    });
+  }
+
+  otkaziPrijavu(prijavaId: string, slidingEl: IonItemSliding) {
     slidingEl.close();
+    this.prijaveService.otkaziPrijavu(prijavaId).subscribe();
   }
 }

@@ -7,6 +7,7 @@ export class Projekat {
         public lokacija: string,
         public timovi: Array<String>,
         public datumOd: Date,
-        public datumDo: Date
+        public datumDo: Date,
+        public userId: string
     ){}
 }

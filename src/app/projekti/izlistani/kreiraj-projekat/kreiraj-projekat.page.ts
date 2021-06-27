@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
+import { ProjektiService } from '../../projekti.service';
 
 @Component({
   selector: 'app-kreiraj-projekat',
@@ -7,8 +10,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./kreiraj-projekat.page.scss'],
 })
 export class KreirajProjekatPage implements OnInit {
-  form: FormGroup; 
-  constructor() { }
+  form: FormGroup;
+  constructor(private projekatService: ProjektiService, private loader: LoadingController,
+    private router: Router) { }
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -40,8 +44,21 @@ export class KreirajProjekatPage implements OnInit {
   }
 
   onCreateProjekat() {
-    if(!this.form.valid)
+    if (!this.form.valid)
       return;
-    console.log(this.form);
+    console.log(this.form.value.tim);
+    this.loader.create({
+      message: 'Pravi se projekat...'
+    }).then(loadingEl => {
+      loadingEl.present();
+      this.projekatService.addProjekat(
+        this.form.value.naziv, this.form.value.opis, this.form.value.lokacija,
+        new Array<String>(...this.form.value.tim), new Date(this.form.value.datumOd), new Date(this.form.value.datumDo), "abc"
+      ).subscribe(() => {
+        loadingEl.dismiss();
+        this.form.reset();
+        this.router.navigate(['/projekti/tabs/izlistani']);
+      });
+    });
   }
 }
