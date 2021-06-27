@@ -6,19 +6,23 @@
 
 <ion-content padding>
   <ion-grid>
-    <ion-row>
+    <ion-spinner *ngIf="isLoading"></ion-spinner>
+    <p *ngIf="isLoading && ucitaniProjekti.length<= 0">Nema projekata za prikazivanje. Napravi neki!</p>
+    <ion-row *ngIf="!isLoading && ucitaniProjekti.length>0">
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <ion-card>
           <ion-card-header>
             <ion-card-title>{{ ucitaniProjekti[0].naziv }}</ion-card-title>
-            <ion-card-subtitle>{{ ucitaniProjekti[0].datumOd | date : 'short'}} - {{ ucitaniProjekti[0].datumDo | date : 'short'}}</ion-card-subtitle>
+            <ion-card-subtitle>{{ ucitaniProjekti[0].datumOd | date : 'short'}} - {{ ucitaniProjekti[0].datumDo | date :
+              'short'}}</ion-card-subtitle>
           </ion-card-header>
           <ion-img [src]="ucitaniProjekti[0].imgUrl"></ion-img>
           <ion-card-content>
             <p>{{ ucitaniProjekti[0].opis }}</p>
           </ion-card-content>
           <div class="text-right">
-            <ion-button fill="clear" color="primary" routerDirection="backward" [routerLink]="['/', 'projekti', 'tabs', 'istaknuto', ucitaniProjekti[0].id]">Saznaj više</ion-button>
+            <ion-button fill="clear" color="primary" routerDirection="backward"
+              [routerLink]="['/', 'projekti', 'tabs', 'istaknuto', ucitaniProjekti[0].id]">Saznaj više</ion-button>
           </div>
         </ion-card>
       </ion-col>
@@ -26,7 +30,8 @@
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <ion-list>
-          <ion-item *ngFor="let projekat of ucitaniProjekti.slice(1)" [routerLink]="['/', 'projekti', 'tabs', 'istaknuto', projekat.id]">
+          <ion-item *ngFor="let projekat of ucitaniProjekti.slice(1)"
+            [routerLink]="['/', 'projekti', 'tabs', 'istaknuto', projekat.id]">
             <ion-thumbnail slot="start">
               <ion-img [src]="projekat.imgUrl"></ion-img>
             </ion-thumbnail>

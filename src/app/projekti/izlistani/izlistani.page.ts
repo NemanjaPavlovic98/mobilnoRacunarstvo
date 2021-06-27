@@ -12,9 +12,11 @@ import { ProjektiService } from '../projekti.service';
 })
 export class IzlistaniPage implements OnInit, OnDestroy {
   izlistaniProjekti: Projekat[];
+  isLoading = false; 
   private subskr: Subscription;
   
-  constructor(private projektiServise: ProjektiService, private router:Router) { }
+  constructor(private projektiServise: ProjektiService, private router:Router,
+    ) { }
 
   ngOnDestroy(): void {
     if(this.subskr)
@@ -26,6 +28,14 @@ export class IzlistaniPage implements OnInit, OnDestroy {
       this.izlistaniProjekti  = projekti;
     }) 
   }
+
+  ionViewWillEnter(){
+    this.isLoading = true;
+    this.projektiServise.fetchProjekti().subscribe( () =>{
+      this.isLoading = false; 
+    }) ; 
+  }
+
   onEdit(id: string, sliderItem: IonItemSliding){
     sliderItem.close();
     this.router.navigate(['/', 'projekti', 'tabs', 'izlistani', 'izmeni', id]);

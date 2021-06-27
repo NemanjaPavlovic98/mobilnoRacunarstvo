@@ -11,6 +11,7 @@ import { ProjektiService } from '../projekti.service';
 export class IstaknutoPage implements OnInit, OnDestroy {
   private subskr: Subscription;
   ucitaniProjekti: Projekat[];
+  isLoading =  false;
 
   constructor(private projektiServise: ProjektiService) { }
 
@@ -18,6 +19,13 @@ export class IstaknutoPage implements OnInit, OnDestroy {
     this.subskr = this.projektiServise.projekti.subscribe(projekti =>  {
       this.ucitaniProjekti  = projekti;
     }) 
+  }
+
+  ionViewWillEnter(){
+    this.isLoading = true;
+    this.projektiServise.fetchProjekti().subscribe( () =>{
+      this.isLoading = false; 
+    }) ; 
   }
 
   ngOnDestroy(): void {

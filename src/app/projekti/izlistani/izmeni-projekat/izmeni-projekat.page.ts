@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, NavController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { Projekat } from '../../projekti.model';
 import { ProjektiService } from '../../projekti.service';
@@ -14,6 +14,8 @@ type NewType = Subscription;
   styleUrls: ['./izmeni-projekat.page.scss'],
 })
 export class IzmeniProjekatPage implements OnInit {
+  isLoading = false;
+  projekatId: string;
   projekat: Projekat;
   private subskr: NewType;
   form: FormGroup;
@@ -23,7 +25,8 @@ export class IzmeniProjekatPage implements OnInit {
     private projekatServis: ProjektiService,
     private navCtrl: NavController,
     private router: Router,
-    private loader: LoadingController
+    private loader: LoadingController,
+    private alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
@@ -32,6 +35,8 @@ export class IzmeniProjekatPage implements OnInit {
         this.navCtrl.navigateBack('/projekti/tabs/izlistani');
         return;
       }
+      this.projekatId =  paramMap.get('projekatId');
+      this.isLoading = true;
       this.subskr = this.projekatServis.getProjekat(paramMap.get('projekatId')).subscribe(projekat => {
         this.projekat = projekat;
 
@@ -63,6 +68,24 @@ export class IzmeniProjekatPage implements OnInit {
             validators: [Validators.required]
           })
         });
+        this.isLoading = false; 
+      }, error => {
+        this.alertCtrl
+              .create({
+                header: 'Greska!',
+                message: 'Pokusaj opet kasnije',
+                buttons: [
+                  {
+                    text: 'Ok',
+                    handler: () => {
+                      this.router.navigate(['/projekti/tabs/izlistani']);
+                    }
+                  }
+                ]
+              })
+              .then(alertEl => {
+                alertEl.present();
+              });
       });
     });
   }
