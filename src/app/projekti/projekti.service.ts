@@ -13,7 +13,8 @@ export class ProjektiService {
       "https://startit.rs/media/fon-hakaton-fb.jpg",
       "Fakultet organizacionih nauka",
       ["IT", "Dizajn", "HR", "PR", "CR", "Logistika"],
-      "12.02.2021 - 12.02.2021."
+      new Date('2021-10-10'),
+      new Date('2021-10-10')
     ),
     new Projekat(
       "p2",
@@ -22,7 +23,8 @@ export class ProjektiService {
       "https://startit.rs/media/fon-hakaton-fb.jpg",
       "Fakultet organizacionih nauka",
       ["IT", "Dizajn", "HR", "PR", "CR", "Logistika"],
-      "12.02.2021 - 12.02.2021."
+      new Date('2021-10-10'),
+      new Date('2021-10-10')
     )
   ];
 

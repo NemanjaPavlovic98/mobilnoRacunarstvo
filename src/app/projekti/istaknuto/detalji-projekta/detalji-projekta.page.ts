@@ -63,12 +63,13 @@ export class DetaljiProjektaPage implements OnInit {
 
     this.modalController.create({ 
       component: PrijavaComponent,
-      componentProps: {izabraniProjekat: this.projekat} 
+      componentProps: {izabraniProjekat: this.projekat, selectedMode: mode} 
     }).then(modalEl => { 
         modalEl.present(); 
         return modalEl.onDidDismiss();
       }
     ).then( resData => {
+      console.log(resData.data, resData.role);
       if(resData.role === 'potvrdi'){
         console.log('uspeh!');
       }

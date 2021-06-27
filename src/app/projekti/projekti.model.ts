@@ -5,7 +5,8 @@ export class Projekat {
         public opis: string,
         public imgUrl: string,
         public lokacija: string,
-        public timovi: string[],
-        public datum: string
+        public timovi: Array<String>,
+        public datumOd: Date,
+        public datumDo: Date
     ){}
 }

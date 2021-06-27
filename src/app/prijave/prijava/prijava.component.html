@@ -11,5 +11,55 @@
 
 <ion-content class="ion-text-center" padding>
   <p>Prijavi se za rad na {{ izabraniProjekat.naziv }}</p>
-  <ion-button color="primary" (click)="onApply()">Prijavi se!</ion-button>
+  <form (ngSubmit)="onApply(f)" #f="ngForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Ime</ion-label>
+            <ion-input type="text" ngModel name="first-name" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Prezime</ion-label>
+            <ion-input type="text" ngModel name="last-name" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating">Tim</ion-label>
+            <ion-select [ngModel]="tim ? tim.toLowerCase() :''" name="tim">
+              <ion-select-option value="it">IT</ion-select-option>
+              <ion-select-option value="dizajn">Dizajn</ion-select-option>
+              <ion-select-option value="hr">HR</ion-select-option>
+              <ion-select-option value="cr">CR</ion-select-option>
+              <ion-select-option value="pr">Pr</ion-select-option>
+              <ion-select-option value="logistika">Logistika</ion-select-option>
+              <ion-select-option value="ar">Ar</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-item>
+            <ion-label position="floating" required>Zašto si baš ti prava osoba</ion-label>
+            <ion-textarea rows="3" ngModel name="poruka"></ion-textarea>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+          <ion-button type="submit" color="primary" expand="block" [disabled]="!f.valid">
+            Prijavi se!
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
 </ion-content>
