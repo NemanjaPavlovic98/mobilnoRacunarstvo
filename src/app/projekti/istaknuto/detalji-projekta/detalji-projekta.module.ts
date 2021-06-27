@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DetaljiProjektaPageRoutingModule } from './detalji-projekta-routing.module';
 
 import { DetaljiProjektaPage } from './detalji-projekta.page';
+import { PrijavaComponent } from 'src/app/prijave/prijava/prijava.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { DetaljiProjektaPage } from './detalji-projekta.page';
     IonicModule,
     DetaljiProjektaPageRoutingModule
   ],
-  declarations: [DetaljiProjektaPage]
+  declarations: [DetaljiProjektaPage, PrijavaComponent],
+  entryComponents: [PrijavaComponent]
 })
 export class DetaljiProjektaPageModule {}

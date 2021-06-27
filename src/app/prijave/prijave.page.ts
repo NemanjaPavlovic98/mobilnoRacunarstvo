@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { IonItemSliding } from '@ionic/angular';
+import { Prijava } from './prijava.model';
+import { PrijaveService } from './prijave.service';
 
 @Component({
   selector: 'app-prijave',
@@ -6,10 +9,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./prijave.page.scss'],
 })
 export class PrijavePage implements OnInit {
+  ucitanePrijave: Prijava[];
 
-  constructor() { }
+  constructor(private prijaveService: PrijaveService) { }
 
   ngOnInit() {
+    this.ucitanePrijave = this.prijaveService.prijave;
   }
 
+  onCancelBooking(projekatId: string, slidingEl: IonItemSliding) {
+    slidingEl.close();
+  }
 }
