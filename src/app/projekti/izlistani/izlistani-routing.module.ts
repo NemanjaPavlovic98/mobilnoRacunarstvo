@@ -16,10 +16,10 @@ const routes: Routes = [
     path: 'izmeni-projekat',
     loadChildren: () => import('./izmeni-projekat/izmeni-projekat.module').then( m => m.IzmeniProjekatPageModule)
   },
-  {
-    path: 'prijave',
-    loadChildren: () => import('./prijave/prijave.module').then( m => m.PrijavePageModule)
-  }
+  // {
+  //   path: 'prijave',
+  //   loadChildren: () => import('./prijave/prijave.module').then( m => m.PrijavePageModule)
+  // }
 ];
 
 @NgModule({

@@ -10,10 +10,11 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col size-md="6" offset-md="3" *ngIf="!ucitanePrijave || ucitanePrijave.length<=0">
+      <ion-col *ngIf="isLoading"><ion-spinner></ion-spinner></ion-col>
+      <ion-col size-md="6" offset-md="3" *ngIf="!isLoading && (!ucitanePrijave || ucitanePrijave.length<=0)">
         <p>Nema prijava!</p>
       </ion-col>
-      <ion-col size-md="6" offset-md="3" *ngIf="ucitanePrijave && ucitanePrijave.length>0">
+      <ion-col size-md="6" offset-md="3" *ngIf="!isLoading &&  ucitanePrijave && ucitanePrijave.length>0">
         <ion-list>
           <ion-item-sliding *ngFor="let prijava of ucitanePrijave" #slidingPrijava>
             <ion-item>

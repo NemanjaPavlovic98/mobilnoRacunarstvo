@@ -10,6 +10,7 @@ import { PrijaveService } from './prijave.service';
   styleUrls: ['./prijave.page.scss'],
 })
 export class PrijavePage implements OnInit, OnDestroy {
+  isLoading = false;
   ucitanePrijave: Prijava[];
   private bookingSub: Subscription;
   
@@ -21,6 +22,13 @@ export class PrijavePage implements OnInit, OnDestroy {
   ngOnInit() {
     this.bookingSub = this.prijaveService.prijave.subscribe(prijava => {
       this.ucitanePrijave = prijava;
+    });
+  }
+
+  ionViewWillEnter(){
+    this.isLoading = true;
+    this.prijaveService.fetchPrijave().subscribe(() =>{
+      this.isLoading = false;
     });
   }
 

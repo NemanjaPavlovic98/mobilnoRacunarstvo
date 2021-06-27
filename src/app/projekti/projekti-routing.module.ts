@@ -36,10 +36,10 @@ const routes: Routes = [
             path: 'izmeni/:projekatId',
             loadChildren: () => import('./izlistani/izmeni-projekat/izmeni-projekat.module').then(m => m.IzmeniProjekatPageModule)
           },
-          {
-            path: ':projekatId',
-            loadChildren: () => import('./izlistani/prijave/prijave.module').then(m => m.PrijavePageModule)
-          }
+          // {
+          //   path: ':projekatId',
+          //   loadChildren: () => import('./izlistani/prijave/prijave.module').then(m => m.PrijavePageModule)
+          // }
         ]
       },
       {

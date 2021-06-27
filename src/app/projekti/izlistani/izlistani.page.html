@@ -20,7 +20,8 @@
         <p *ngIf="isLoading && izlistaniProjekti.length<= 0">Nema projekata za prikazivanje. Napravi neki!</p>
         <ion-list *ngIf="!isLoading && izlistaniProjekti.length>0">
          <ion-item-sliding *ngFor="let projekat of izlistaniProjekti" #slider>
-          <ion-item [routerLink]="['/', 'projekti', 'tabs', 'izlistani', projekat.id]" >
+          <ion-item  >
+            <!-- [routerLink]="['/', 'projekti', 'tabs', 'izlistani', projekat.id]" -->
             <ion-thumbnail slot="start">
               <ion-img [src]="projekat.imgUrl"></ion-img>
             </ion-thumbnail>
