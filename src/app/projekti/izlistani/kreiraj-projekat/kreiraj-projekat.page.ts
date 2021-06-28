@@ -46,14 +46,13 @@ export class KreirajProjekatPage implements OnInit {
   onCreateProjekat() {
     if (!this.form.valid)
       return;
-    console.log(this.form.value.tim);
     this.loader.create({
       message: 'Pravi se projekat...'
     }).then(loadingEl => {
       loadingEl.present();
       this.projekatService.addProjekat(
         this.form.value.naziv, this.form.value.opis, this.form.value.lokacija,
-        new Array<String>(...this.form.value.tim), new Date(this.form.value.datumOd), new Date(this.form.value.datumDo), "abc"
+        new Array<String>(...this.form.value.tim), new Date(this.form.value.datumOd), new Date(this.form.value.datumDo)
       ).subscribe(() => {
         loadingEl.dismiss();
         this.form.reset();

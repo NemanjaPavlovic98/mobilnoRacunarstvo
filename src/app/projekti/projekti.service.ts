@@ -81,22 +81,28 @@ export class ProjektiService {
     timovi: Array<String>,
     datumOd: Date,
     datumDo: Date,
-    userId: string
+    // userId: string
   ) {
     let noviId: string;
-    const noviProjekat = new Projekat(
-      Math.random().toString(),
-      naziv,
-      opis,
-      'https://lonelyplanetimages.imgix.net/mastheads/GettyImages-538096543_medium.jpg?sharp=10&vib=20&w=1200',
-      lokacija,
-      timovi,
-      datumOd,
-      datumDo,
-      this.authService.userId
-    );
-    return this.http.post<{ name: string }>('https://mobilno-racunarstvo-3c133-default-rtdb.europe-west1.firebasedatabase.app/izlistani-projekti.json', { ...noviProjekat, id: null })
-      .pipe(
+    let noviProjekat: Projekat;
+    return this.authService.userId.pipe(take(1),switchMap(userId => {
+      if(!userId){
+        throw new Error("Greska, nema usera!");
+      }
+      noviProjekat = new Projekat(
+        Math.random().toString(),
+        naziv,
+        opis,
+        'https://lonelyplanetimages.imgix.net/mastheads/GettyImages-538096543_medium.jpg?sharp=10&vib=20&w=1200',
+        lokacija,
+        timovi,
+        datumOd,
+        datumDo,
+        userId
+      );
+      return this.http.post<{ name: string }>('https://mobilno-racunarstvo-3c133-default-rtdb.europe-west1.firebasedatabase.app/izlistani-projekti.json', { ...noviProjekat, id: null });
+        
+    }),
         switchMap(resData => {
           noviId = resData.name;
           return this.projekti;
@@ -104,7 +110,7 @@ export class ProjektiService {
         take(1),
         tap(projekti => {
           noviProjekat.id = noviId;
-          this._projekti.next(projekti.concat(noviProjekat))
+          this._projekti.next(projekti.concat(noviProjekat));
         })
       );
   }

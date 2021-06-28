@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActionSheetController, AlertController, LoadingController, ModalController, NavController } from '@ionic/angular';
+import { errorMonitor } from 'events';
 import { Subscription } from 'rxjs';
+import { switchMap, take } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/auth.service';
 import { PrijavaComponent } from 'src/app/prijave/prijava/prijava.component';
 import { PrijaveService } from 'src/app/prijave/prijave.service';
 import { Projekat } from '../../projekti.model';
@@ -14,6 +17,7 @@ import { ProjektiService } from '../../projekti.service';
 })
 export class DetaljiProjektaPage implements OnInit, OnDestroy {
   private subskr: Subscription;
+  
   projekat: Projekat;
   isLoading = false;
   constructor(
@@ -25,7 +29,8 @@ export class DetaljiProjektaPage implements OnInit, OnDestroy {
     private prijaveService: PrijaveService,
     private loader: LoadingController,
     private alertCtrl: AlertController,
-    private router: Router
+    private router: Router, 
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -34,8 +39,15 @@ export class DetaljiProjektaPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/projekti/tabs/istaknuto');
         return;
       }
+      let featchedUserId: string;
       this.isLoading = true;
-      this.subskr = this.projektiServis.getProjekat(paramMap.get('projekatId')).subscribe(projekat => {
+      this.authService.userId.pipe(take(1),switchMap(userId => {
+        if(!userId){
+          throw  new Error("Nema user");
+        }
+        featchedUserId = userId;
+        return this.projektiServis.getProjekat(paramMap.get('projekatId'));
+      })).subscribe(projekat => {
         this.projekat = projekat;
         console.log(this.projekat);
         this.isLoading = false;
@@ -94,8 +106,6 @@ export class DetaljiProjektaPage implements OnInit, OnDestroy {
   }
 
   otvoriModal(mode: 'select' | 'random') {
-    console.log(mode);
-
     this.modalController.create({
       component: PrijavaComponent,
       componentProps: { izabraniProjekat: this.projekat, selectedMode: mode }

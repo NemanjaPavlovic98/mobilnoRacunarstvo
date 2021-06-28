@@ -39,26 +39,32 @@ export class PrijaveService {
     poruka: string
   ) {
     let generatedId: string;
-    const novaPrijava = new Prijava(
-      Math.random().toString(),
-      projekatId,
-      this.authService.userId,
-      nazivProjekta,
-      imgProjekta,
-      ime,
-      prezime,
-      tim,
-      poruka
-    );
-    return this.http.post<{ name: string }>('https://mobilno-racunarstvo-3c133-default-rtdb.europe-west1.firebasedatabase.app/prijave.json',
-      { ...novaPrijava, id: null }).pipe(switchMap(resData => {
-        generatedId = resData.name;
-        return this.prijave;
-      }), take(1), tap(prijve => {
-        novaPrijava.id = generatedId;
-        this._prijave.next(prijve.concat(novaPrijava));
-      })
+    let novaPrijava:Prijava;
+    return this.authService.userId.pipe(take(1), switchMap(userId => {
+      if (!userId) {
+        throw new Error("Nije pronadjen user");
+      }
+      novaPrijava = new Prijava(
+        Math.random().toString(),
+        projekatId,
+        userId,
+        nazivProjekta,
+        imgProjekta,
+        ime,
+        prezime,
+        tim,
+        poruka
       );
+      return this.http.post<{ name: string }>('https://mobilno-racunarstvo-3c133-default-rtdb.europe-west1.firebasedatabase.app/prijave.json',
+        { ...novaPrijava, id: null });
+    }), switchMap(resData => {
+      generatedId = resData.name;
+      return this.prijave;
+    }), take(1), tap(prijve => {
+      novaPrijava.id = generatedId;
+      this._prijave.next(prijve.concat(novaPrijava));
+    })
+    );
   }
 
   fetchPrijave() {
@@ -80,7 +86,7 @@ export class PrijaveService {
                   prijaveServer[key].nazivProjekta,
                   prijaveServer[key].imgProjekta,
                   prijaveServer[key].ime,
-                  prijaveServer[key]. prezime,
+                  prijaveServer[key].prezime,
                   prijaveServer[key].tim,
                   prijaveServer[key].poruka
                 )
@@ -100,14 +106,14 @@ export class PrijaveService {
       .delete(
         `https://mobilno-racunarstvo-3c133-default-rtdb.europe-west1.firebasedatabase.app/prijave/${prijavaId}.json`
       )
-    .pipe(
-      switchMap(() => {
-        return this.prijave;
-      }),
-      take(1),
-      tap(prijve => {
-        this._prijave.next(prijve.filter(p => p.id !== prijavaId));
-      })
-    );
+      .pipe(
+        switchMap(() => {
+          return this.prijave;
+        }),
+        take(1),
+        tap(prijve => {
+          this._prijave.next(prijve.filter(p => p.id !== prijavaId));
+        })
+      );
   }
 }
